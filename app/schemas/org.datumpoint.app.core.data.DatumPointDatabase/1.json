@@ -1,0 +1,516 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "69d9f4ba80380e75f3dd66763a2fdcd8",
+    "entities": [
+      {
+        "tableName": "projects",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `description` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `crs` TEXT NOT NULL, `defaultObservationSeconds` INTEGER NOT NULL, `notes` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "crs",
+            "columnName": "crs",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultObservationSeconds",
+            "columnName": "defaultObservationSeconds",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "survey_points",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `projectId` INTEGER NOT NULL, `name` TEXT NOT NULL, `description` TEXT NOT NULL, `sequence` INTEGER NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `easting` REAL NOT NULL, `northing` REAL NOT NULL, `altitude` REAL, `createdAt` INTEGER NOT NULL, `qualityClass` TEXT NOT NULL, `notes` TEXT NOT NULL, FOREIGN KEY(`projectId`) REFERENCES `projects`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "projectId",
+            "columnName": "projectId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sequence",
+            "columnName": "sequence",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "easting",
+            "columnName": "easting",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "northing",
+            "columnName": "northing",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "altitude",
+            "columnName": "altitude",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "qualityClass",
+            "columnName": "qualityClass",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_survey_points_projectId",
+            "unique": false,
+            "columnNames": [
+              "projectId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_survey_points_projectId` ON `${TABLE_NAME}` (`projectId`)"
+          },
+          {
+            "name": "index_survey_points_projectId_name",
+            "unique": true,
+            "columnNames": [
+              "projectId",
+              "name"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_survey_points_projectId_name` ON `${TABLE_NAME}` (`projectId`, `name`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "projects",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "projectId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "observation_sessions",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `pointId` INTEGER NOT NULL, `startedAt` INTEGER NOT NULL, `endedAt` INTEGER NOT NULL, `durationSeconds` INTEGER NOT NULL, `totalFixes` INTEGER NOT NULL, `acceptedFixes` INTEGER NOT NULL, `rejectedFixes` INTEGER NOT NULL, `sigmaE` REAL NOT NULL, `sigmaN` REAL NOT NULL, `radialRms` REAL NOT NULL, `maxRadialDeviation` REAL NOT NULL, `minReportedAccuracy` REAL NOT NULL, `meanReportedAccuracy` REAL NOT NULL, `medianReportedAccuracy` REAL NOT NULL, `maxReportedAccuracy` REAL NOT NULL, `satellitesVisible` INTEGER, `satellitesUsed` INTEGER, `meanCn0` REAL, `medianCn0` REAL, `rawGnssSupported` INTEGER NOT NULL, `deviceModel` TEXT NOT NULL, `androidVersion` TEXT NOT NULL, `processingVersion` TEXT NOT NULL, FOREIGN KEY(`pointId`) REFERENCES `survey_points`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pointId",
+            "columnName": "pointId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startedAt",
+            "columnName": "startedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endedAt",
+            "columnName": "endedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "durationSeconds",
+            "columnName": "durationSeconds",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalFixes",
+            "columnName": "totalFixes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "acceptedFixes",
+            "columnName": "acceptedFixes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rejectedFixes",
+            "columnName": "rejectedFixes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sigmaE",
+            "columnName": "sigmaE",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sigmaN",
+            "columnName": "sigmaN",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "radialRms",
+            "columnName": "radialRms",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxRadialDeviation",
+            "columnName": "maxRadialDeviation",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "minReportedAccuracy",
+            "columnName": "minReportedAccuracy",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "meanReportedAccuracy",
+            "columnName": "meanReportedAccuracy",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "medianReportedAccuracy",
+            "columnName": "medianReportedAccuracy",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxReportedAccuracy",
+            "columnName": "maxReportedAccuracy",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "satellitesVisible",
+            "columnName": "satellitesVisible",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "satellitesUsed",
+            "columnName": "satellitesUsed",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "meanCn0",
+            "columnName": "meanCn0",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "medianCn0",
+            "columnName": "medianCn0",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "rawGnssSupported",
+            "columnName": "rawGnssSupported",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deviceModel",
+            "columnName": "deviceModel",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "androidVersion",
+            "columnName": "androidVersion",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "processingVersion",
+            "columnName": "processingVersion",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_observation_sessions_pointId",
+            "unique": false,
+            "columnNames": [
+              "pointId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_observation_sessions_pointId` ON `${TABLE_NAME}` (`pointId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "survey_points",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "pointId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "reference_segments",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `projectId` INTEGER NOT NULL, `fromPointName` TEXT NOT NULL, `toPointName` TEXT NOT NULL, `expectedDistanceMeters` REAL NOT NULL, `description` TEXT NOT NULL, FOREIGN KEY(`projectId`) REFERENCES `projects`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "projectId",
+            "columnName": "projectId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fromPointName",
+            "columnName": "fromPointName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "toPointName",
+            "columnName": "toPointName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expectedDistanceMeters",
+            "columnName": "expectedDistanceMeters",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_reference_segments_projectId",
+            "unique": false,
+            "columnNames": [
+              "projectId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_reference_segments_projectId` ON `${TABLE_NAME}` (`projectId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "projects",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "projectId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "reference_values",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `projectId` INTEGER NOT NULL, `type` TEXT NOT NULL, `value` REAL NOT NULL, `unit` TEXT NOT NULL, `description` TEXT NOT NULL, FOREIGN KEY(`projectId`) REFERENCES `projects`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "projectId",
+            "columnName": "projectId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "value",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "unit",
+            "columnName": "unit",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_reference_values_projectId",
+            "unique": false,
+            "columnNames": [
+              "projectId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_reference_values_projectId` ON `${TABLE_NAME}` (`projectId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "projects",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "projectId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '69d9f4ba80380e75f3dd66763a2fdcd8')"
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Datum Point</string>
+  <string name="permission_rationale">O Datum Point precisa da localização precisa para registrar observações GNSS de campo. Os dados ficam armazenados localmente no aparelho.</string>
+  <string name="stability_disclaimer">Indicador de estabilidade da ocupação. Não representa precisão topográfica certificada.</string>
+  <string name="decimal_disclaimer">Número de casas decimais não representa a precisão real da medição.</string>
+  <string name="report_footer">Levantamento GNSS de reconhecimento realizado com smartphone. Este relatório não substitui levantamento topográfico/geodésico executado com equipamento e metodologia apropriados.</string>
+</resources>

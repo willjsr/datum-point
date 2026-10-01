@@ -1,0 +1,20 @@
+name: Bug report
+description: Reporte um problema no Datum Point
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Descrição
+      description: O que aconteceu?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Passos para reproduzir
+  - type: input
+    id: device
+    attributes:
+      label: Dispositivo / Android

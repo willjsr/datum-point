@@ -1,0 +1,16 @@
+name: Feature request
+description: Sugira uma melhoria
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema
+      description: Que necessidade de campo esta melhoria resolve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposta
